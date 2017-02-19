@@ -9,18 +9,7 @@ namespace MagickSharp.Core
 {
     public partial class MagickImage : IDisposable
     {
-        private IntPtr _instance;
-
-        public IntPtr Instance
-        {
-            get { return _instance; }
-            set
-            {
-                if (Instance != IntPtr.Zero)
-                    DisposeInstance(Instance);
-                _instance = value;
-            }
-        }
+        public IntPtr MagickWand { get; private set; }
 
         public MagickImage(byte[] data)
         {
@@ -29,12 +18,12 @@ namespace MagickSharp.Core
 
         private void Read(byte[] data)
         {
-            Instance = Native.MagickNative.LoadImage(data, (UInt64)data.Length);
+            MagickWand = Native.MagickNative.LoadImage(data, (UInt64)data.Length);
         }
         
         public bool AdaptiveResize(UInt64 width, UInt64 height)
         {
-            return Native.MagickNative.AdaptiveResizeImage(Instance, width, height);
+            return Native.MagickNative.AdaptiveResizeImage(MagickWand, width, height);
         }
 
         public bool AdaptiveResize(Percentage percentage)
@@ -43,46 +32,40 @@ namespace MagickSharp.Core
             return AdaptiveResize(p.x,p.y);
         }
 
-        public bool LiquidResize(ulong width, ulong height)
+        public bool LiquidResize(ulong width, ulong height, double delta_x = 0, double rigidity = 0)
         {
-            return MagickNative.LiquidResizeImage(Instance, width, height);
+            return MagickNative.LiquidResizeImage(MagickWand, width, height, delta_x, rigidity);
         }
 
-        public bool LiquidResize(Percentage percentage)
+        public bool LiquidResize(Percentage percentage, double delta_x = 0, double rigidity = 0)
         {
             var p = PercentageToPoint(percentage);
-            return LiquidResize(p.x, p.y);
+            return LiquidResize(p.x, p.y, delta_x, rigidity);
         }
 
         public bool SaveImage(string filename)
         {
-            return Native.MagickNative.WriteImage(Instance, filename);
+            return Native.MagickNative.WriteImage(MagickWand, filename);
         }
 
         public string ImageFormat
         {
-            get { return Native.MagickNative.GetImageFormat(Instance); }
+            get { return Native.MagickNative.GetImageFormat(MagickWand); }
         }
 
         public ulong Width
         {
-            get { return MagickNative.GetImageWidth(Instance); }
+            get { return MagickNative.GetImageWidth(MagickWand); }
         }
 
         public ulong Height
         {
-            get { return MagickNative.GetImageHeight(Instance); }
+            get { return MagickNative.GetImageHeight(MagickWand); }
         }
 
         public void Dispose()
         {
-            
-        }
-
-        public void DisposeInstance(IntPtr ptr)
-        {
-            ptr = IntPtr.Zero;
-            GC.SuppressFinalize(this);
+            MagickNative.DisposeImage(MagickWand);
         }
     }
 }

@@ -30,7 +30,7 @@ __crsplat w *MagickSharpLoadImage(unsigned char *image, size_t size)
 	return wand;
 }
 
-__crsplat bool SharpDisposeWand(w *wand)
+__crsplat void SharpDisposeWand(w *wand)
 {
 	wand = DestroyMagickWand(wand);
 }

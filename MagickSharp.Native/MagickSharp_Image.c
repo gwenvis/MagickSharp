@@ -22,10 +22,10 @@ __crsplat bool SharpAdaptiveResizeImage(w *wand, size_t c, size_t r)
 	return result;
 }
 
-__crsplat bool SharpLiquidRescaleImage(w *wand, size_t c, size_t r)
+__crsplat bool SharpLiquidRescaleImage(w *wand, size_t c, size_t r, double delta_x, double rigidity)
 {
 	MAGICK_BOOL;
-	result = MagickLiquidRescaleImage(wand, c, r, 0, 0);
+	result = MagickLiquidRescaleImage(wand, c, r, delta_x, rigidity);
 	return result;
 }
 
