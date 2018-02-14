@@ -11,14 +11,50 @@ namespace MagickSharp.Core
     {
         public IntPtr MagickWand { get; private set; }
 
+        public MagickImage()
+        {
+            MagickWand = MagickNative.CreateWand();
+        }
+
+        public MagickImage(MagickImage image)
+        {
+            Copy(image);
+        }
+        
         public MagickImage(byte[] data)
         {
             Read(data);
+        }
+        
+        public MagickImage(string data)
+        {
+            Read(data);
+        }
+
+        public MagickImage(IntPtr ptr)
+        {
+            MagickWand = ptr;
+        }
+
+        public ulong ImageDelay
+        {
+            set => MagickNative.SetImageDelay(MagickWand, value);
+            get => MagickNative.GetImageDelay(MagickWand);
         }
 
         private void Read(byte[] data)
         {
             MagickWand = Native.MagickNative.LoadImage(data, (UInt64)data.Length);
+        }
+
+        private void Read(string filename)
+        {
+            MagickWand = MagickNative.LoadImageFilename(filename);
+        }
+
+        private void Copy(MagickImage image)
+        {
+            MagickWand = MagickNative.CopyImage(image.MagickWand);
         }
         
         public bool AdaptiveResize(UInt64 width, UInt64 height)
@@ -32,6 +68,12 @@ namespace MagickSharp.Core
             return AdaptiveResize(p.x,p.y);
         }
 
+        public bool Composite(MagickImage source, CompositeOperator co, int x, int y)
+        {
+            return MagickNative.Composite(MagickWand, source.MagickWand, (ulong)co, 0, 
+                new IntPtr(x), new IntPtr(y));
+        }
+
         public bool LiquidResize(ulong width, ulong height, double delta_x = 0, double rigidity = 0)
         {
             return MagickNative.LiquidResizeImage(MagickWand, width, height, delta_x, rigidity);
@@ -43,7 +85,17 @@ namespace MagickSharp.Core
             return LiquidResize(p.x, p.y, delta_x, rigidity);
         }
 
-        public bool SaveImage(string filename)
+        public bool Crop(int xOffset, int yOffset, int width, int height)
+        {
+            return MagickNative.Crop(MagickWand, (ulong)width, (ulong)height, new IntPtr(xOffset), new IntPtr(yOffset));
+        }
+
+        public bool Evaluate(ChannelType c, EvaluateOperator op, double d)
+        {
+            return MagickNative.Evaluate(MagickWand, new IntPtr((int)c), new IntPtr((int)op), d);
+        }
+
+        public bool Write(string filename)
         {
             return Native.MagickNative.WriteImage(MagickWand, filename);
         }
@@ -53,14 +105,12 @@ namespace MagickSharp.Core
             get { return Native.MagickNative.GetImageFormat(MagickWand); }
         }
 
-        public ulong Width
-        {
-            get { return MagickNative.GetImageWidth(MagickWand); }
-        }
+        public ulong Width => MagickNative.GetImageWidth(MagickWand);
+        public ulong Height => MagickNative.GetImageHeight(MagickWand);
 
-        public ulong Height
+        public bool IsNull()
         {
-            get { return MagickNative.GetImageHeight(MagickWand); }
+            return MagickWand == IntPtr.Zero;
         }
 
         public void Dispose()

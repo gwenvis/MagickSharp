@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Volumes/Partitie/MagickSharp/MagickSharp.Native/MagickSharp_Drawable.cpp
+MagickSharp_Drawable.h
+/Volumes/Partitie/MagickSharp/MagickSharp.Native/MagickSharp_Drawable.h
+
+/Volumes/Partitie/MagickSharp/MagickSharp.Native/MagickSharp_Drawable.h
+
