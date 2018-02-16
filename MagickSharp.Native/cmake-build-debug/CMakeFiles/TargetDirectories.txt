@@ -1,7 +1,0 @@
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/install/local.dir
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/install/strip.dir
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/install.dir
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/list_install_components.dir
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/magicksharp.native.dir
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Volumes/Partitie/MagickSharp/MagickSharp.Native/cmake-build-debug/CMakeFiles/edit_cache.dir
